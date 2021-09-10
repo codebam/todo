@@ -7,22 +7,22 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getAllTodo() {
-    return this.appService.getAllTodo();
+  async getAllTodo() {
+    return await this.appService.getAllTodo();
   }
 
   @Post()
-  createTodo(@Req() request: Request) {
-    return this.appService.createTodo(request);
+  async createTodo(@Req() request: Request) {
+    return await this.appService.createTodo(request);
   }
 
   @Put()
-  updateTodo(@Req() request: Request) {
-    return this.appService.updateTodo(request);
+  async updateTodo(@Req() request: Request) {
+    return await this.appService.updateTodo(request);
   }
 
   @Delete()
-  deleteTodo(@Req() request: Request) {
-    return this.appService.deleteTodo(request);
+  async deleteTodo(@Req() request: Request) {
+    return await this.appService.deleteTodo(request);
   }
 }

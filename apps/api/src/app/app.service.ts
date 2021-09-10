@@ -22,22 +22,20 @@ const db = knex(config);
 
 @Injectable()
 export class AppService {
-  getAllTodo(): Todo[] {
-    return db
-      .select('id', 'content', 'completed')
-      .from('todos') as unknown as Todo[];
+  async getAllTodo() {
+    return await db.select('id', 'content', 'completed').from('todos');
   }
-  createTodo(request: Request) {
-    return db('todos').insert({ ...request.body });
+  async createTodo(request: Request) {
+    return await db('todos').insert({ ...request.body });
   }
-  updateTodo(request: Request) {
+  async updateTodo(request: Request) {
     const todo = request.body as Todo;
-    return db('todos')
+    return await db('todos')
       .where('id', todo.id)
       .update({ completed: todo.completed });
   }
-  deleteTodo(request: Request) {
+  async deleteTodo(request: Request) {
     const todo = request.body as Todo;
-    return db('todos').where('id', todo.id).del();
+    return await db('todos').where('id', todo.id).del();
   }
 }
