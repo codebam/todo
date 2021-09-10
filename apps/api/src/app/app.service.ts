@@ -26,16 +26,19 @@ export class AppService {
     return await db.select('id', 'content', 'completed').from('todos');
   }
   async createTodo(request: Request) {
-    return await db('todos').insert({ ...request.body });
+    await db('todos').insert({ ...request.body });
+    return 'success';
   }
   async updateTodo(request: Request) {
     const todo = request.body as Todo;
-    return await db('todos')
+    await db('todos')
       .where('id', todo.id)
       .update({ completed: todo.completed });
+    return 'success';
   }
   async deleteTodo(request: Request) {
     const todo = request.body as Todo;
-    return await db('todos').where('id', todo.id).del();
+    await db('todos').where('id', todo.id).del();
+    return 'success';
   }
 }
