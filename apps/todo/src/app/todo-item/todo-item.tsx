@@ -8,11 +8,10 @@ export interface TodoItemProps {
   updateTodo: (todo: Todo) => void;
 }
 
-const formInitialState = {
-  content: '',
-};
-
 export function TodoItem(props: TodoItemProps) {
+  const formInitialState = {
+    content: props.todo.content,
+  };
   const [form, setForm] = useState(formInitialState);
   const [editing, setEditing] = useState(false);
 
@@ -44,7 +43,12 @@ export function TodoItem(props: TodoItemProps) {
             setEditing(false);
           }}
         >
-          <input onChange={handleSetForm} type="text" name="content" />
+          <input
+            onChange={handleSetForm}
+            value={form.content}
+            type="text"
+            name="content"
+          />
           <input type="submit" value="Save" />
         </form>
       )}
