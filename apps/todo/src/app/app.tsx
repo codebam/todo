@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import styles from './app.module.scss';
 import axios from 'axios';
+import { TodoItem } from './todo-item/todo-item';
 
 const formInitialState = {
   content: '',
 };
 
-interface Todo {
+// TODO import this from a config file
+const API = 'http://127.0.0.1:3333/api';
+
+export interface Todo {
   id: number;
   content: string;
   completed: boolean;
@@ -22,16 +26,25 @@ export function App() {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.post('http://127.0.0.1:3333/api', form);
+    axios.post(API, form);
     getTodos();
   };
 
+  /* eslint-disable-next-line */
   const handleSetForm = ({ target: { name, value } }: any) => {
     setForm((form) => ({ ...form, [name]: value }));
   };
 
+  const updateTodo = (todo: Todo) => {
+    axios.put(API, todo).then(getTodos);
+  };
+
+  const deleteTodo = (id: number) => {
+    axios.delete(API, { data: { id } }).then(getTodos);
+  };
+
   const getTodos = () => {
-    axios.get('http://127.0.0.1:3333/api').then((res) => setTodos(res.data));
+    axios.get(API).then((res) => setTodos(res.data));
   };
 
   return (
@@ -40,12 +53,17 @@ export function App() {
         <h1>Welcome to todo!</h1>
       </header>
       <main>
-        <form onSubmit={handleFormSubmit}>
+        <form className="flex" onSubmit={handleFormSubmit}>
           <input onChange={handleSetForm} type="text" name="content" />
           <input type="submit" value="Add Todo" />
         </form>
         {todos.map((todo) => (
-          <p key={todo.id}>{todo.content}</p>
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            deleteTodo={deleteTodo}
+            updateTodo={updateTodo}
+          />
         ))}
       </main>
     </div>

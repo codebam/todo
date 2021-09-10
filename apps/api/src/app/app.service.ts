@@ -31,9 +31,7 @@ export class AppService {
   }
   async updateTodo(request: Request) {
     const todo = request.body as Todo;
-    await db('todos')
-      .where('id', todo.id)
-      .update({ completed: todo.completed });
+    await db('todos').where('id', todo.id).update(todo);
     return 'success';
   }
   async deleteTodo(request: Request) {

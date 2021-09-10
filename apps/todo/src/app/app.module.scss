@@ -126,3 +126,7 @@
   width: 16px;
   margin-right: 4px;
 }
+
+.app :global(.strike) {
+  text-decoration: line-through;
+}
