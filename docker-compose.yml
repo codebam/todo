@@ -10,8 +10,21 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: root
       POSTGRES_PASSWORD: toor
-  adminer:
-      image: adminer
+  api:
+      image: node:current-alpine
       restart: always
+      working_dir: "/home/node/app"
+      volumes:
+        - "./:/home/node/app:z"
       ports:
-        - 8080:8080
+        - 3333:3333
+      command: "npm run start api"
+  app:
+      image: node:current-alpine
+      restart: always
+      working_dir: "/home/node/app"
+      volumes:
+        - "./:/home/node/app:z"
+      ports:
+        - 4200:4200
+      command: "npm run start"
