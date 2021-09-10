@@ -19,12 +19,12 @@ services:
       ports:
         - 3333:3333
       command: "npm run start api"
-  app:
-      image: node:current-alpine
-      restart: always
-      working_dir: "/home/node/app"
-      volumes:
-        - "./:/home/node/app:z"
-      ports:
-        - 4200:4200
-      command: "npm run start"
+  # app:
+  #     image: node:current-alpine
+  #     restart: always
+  #     working_dir: "/home/node/app"
+  #     volumes:
+  #       - "./:/home/node/app:z"
+  #     ports:
+  #       - 4200:4200
+  #     command: "npm run start"
