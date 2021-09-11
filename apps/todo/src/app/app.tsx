@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './app.module.scss';
 import axios from 'axios';
 import { TodoItem } from './todo-item/todo-item';
-
-const formInitialState = {
-  content: '',
-};
+import { useFormik } from 'formik';
 
 const API_URL = process.env.API_URL || 'http://127.0.0.1';
 const API_PORT = process.env.API_PORT || 3333;
@@ -19,23 +16,20 @@ export interface Todo {
 }
 
 export function App() {
-  const [form, setForm] = useState(formInitialState);
   const [todos, setTodos] = useState<Todo[]>([]);
+  const formik = useFormik({
+    initialValues: {
+      content: '',
+    },
+    onSubmit: (values) => {
+      axios.post(API, values);
+      getTodos();
+    },
+  });
 
   useEffect(() => {
     getTodos();
   });
-
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    axios.post(API, form);
-    getTodos();
-  };
-
-  /* eslint-disable-next-line */
-  const handleSetForm = ({ target: { name, value } }: any) => {
-    setForm((form) => ({ ...form, [name]: value }));
-  };
 
   const updateTodo = (todo: Todo) => {
     axios.put(API, todo).then(getTodos);
@@ -55,8 +49,13 @@ export function App() {
         <h1>Welcome to todo!</h1>
       </header>
       <main>
-        <form className="flex" onSubmit={handleFormSubmit}>
-          <input onChange={handleSetForm} type="text" name="content" required />
+        <form className="flex" onSubmit={formik.handleSubmit}>
+          <input
+            onChange={formik.handleChange}
+            type="text"
+            name="content"
+            required
+          />
           <input type="submit" value="Add Todo" />
         </form>
         {todos.map((todo) => (

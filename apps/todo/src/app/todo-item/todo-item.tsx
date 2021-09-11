@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './todo-item.module.scss';
 import { Todo } from '../app';
+import { useFormik } from 'formik';
 
 export interface TodoItemProps {
   todo: Todo;
@@ -10,16 +11,20 @@ export interface TodoItemProps {
 
 export function TodoItem(props: TodoItemProps) {
   const { todo, updateTodo, deleteTodo } = props;
-  const formInitialState = {
-    content: todo.content,
-  };
-  const [form, setForm] = useState(formInitialState);
+  const formik = useFormik({
+    initialValues: {
+      content: todo.content,
+    },
+    onSubmit: (values) => {
+      updateTodo({
+        id: todo.id,
+        content: values.content,
+        completed: todo.completed,
+      });
+      setEditing(false);
+    },
+  });
   const [editing, setEditing] = useState(false);
-
-  /* eslint-disable-next-line */
-  const handleSetForm = ({ target: { name, value } }: any) => {
-    setForm((form) => ({ ...form, [name]: value }));
-  };
 
   return (
     <div className="flex">
@@ -29,21 +34,10 @@ export function TodoItem(props: TodoItemProps) {
           <button onClick={() => setEditing(true)}>Edit</button>
         </>
       ) : (
-        <form
-          className="flex"
-          onSubmit={(event) => {
-            event.preventDefault();
-            updateTodo({
-              id: todo.id,
-              content: form.content,
-              completed: todo.completed,
-            });
-            setEditing(false);
-          }}
-        >
+        <form className="flex" onSubmit={formik.handleSubmit}>
           <input
-            onChange={handleSetForm}
-            value={form.content}
+            onChange={formik.handleChange}
+            value={formik.values.content}
             type="text"
             name="content"
             required
