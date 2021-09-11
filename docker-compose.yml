@@ -19,6 +19,13 @@ services:
       ports:
         - 3333:3333
       command: "npm run start api"
+  http:
+      image: nginx
+      restart: always
+      volumes:
+        - "./dist/apps/todo:/usr/share/nginx/html:z"
+      ports:
+        - 4200:80
   # app:
   #     image: node:current-alpine
   #     restart: always
