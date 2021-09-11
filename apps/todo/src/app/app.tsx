@@ -7,8 +7,10 @@ const formInitialState = {
   content: '',
 };
 
-// TODO import this from a config file
-const API = 'http://127.0.0.1:3333/api';
+const API_URL = process.env.API_URL || 'http://127.0.0.1';
+const API_PORT = process.env.API_PORT || 3333;
+const API_PREFIX = process.env.API_PREFIX || 'api';
+const API = `${API_URL}:${API_PORT}/${API_PREFIX}`;
 
 export interface Todo {
   id: number;

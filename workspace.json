@@ -69,7 +69,7 @@
             "assets": ["apps/todo/src/favicon.ico", "apps/todo/src/assets"],
             "styles": ["apps/todo/src/styles.scss"],
             "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
+            "webpackConfig": "apps/todo/webpack.config.js"
           },
           "configurations": {
             "production": {

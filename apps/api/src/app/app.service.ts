@@ -10,11 +10,11 @@ interface Todo {
 const config: Knex.Config = {
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
+    host: process.env.POSTGRES_HOST || '127.0.0.1',
     port: 5432,
-    user: 'root',
-    password: 'toor',
-    database: 'postgres',
+    user: process.env.POSTGRES_USER || 'root',
+    password: process.env.POSTGRES_PASSWORD || 'toor',
+    database: process.env.POSTGRES_DB || 'postgres',
   },
 };
 

@@ -9,8 +9,9 @@ export interface TodoItemProps {
 }
 
 export function TodoItem(props: TodoItemProps) {
+  const { todo, updateTodo, deleteTodo } = props;
   const formInitialState = {
-    content: props.todo.content,
+    content: todo.content,
   };
   const [form, setForm] = useState(formInitialState);
   const [editing, setEditing] = useState(false);
@@ -22,23 +23,20 @@ export function TodoItem(props: TodoItemProps) {
 
   return (
     <div className="flex">
-      {!editing && (
+      {!editing ? (
         <>
-          <p className={props.todo.completed ? 'strike' : ''}>
-            {props.todo.content}
-          </p>
+          <p className={todo.completed ? 'strike' : ''}>{todo.content}</p>
           <button onClick={() => setEditing(true)}>Edit</button>
         </>
-      )}
-      {editing && (
+      ) : (
         <form
           className="flex"
           onSubmit={(event) => {
             event.preventDefault();
-            props.updateTodo({
-              id: props.todo.id,
+            updateTodo({
+              id: todo.id,
               content: form.content,
-              completed: props.todo.completed,
+              completed: todo.completed,
             });
             setEditing(false);
           }}
@@ -55,16 +53,16 @@ export function TodoItem(props: TodoItemProps) {
       )}
       <button
         onClick={() => {
-          props.updateTodo({
-            id: props.todo.id,
-            content: props.todo.content,
-            completed: props.todo.completed ? false : true,
+          updateTodo({
+            id: todo.id,
+            content: todo.content,
+            completed: todo.completed ? false : true,
           });
         }}
       >
         Check
       </button>
-      <button onClick={() => props.deleteTodo(props.todo.id)}>Delete</button>
+      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
     </div>
   );
 }
