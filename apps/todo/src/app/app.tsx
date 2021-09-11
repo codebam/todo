@@ -41,10 +41,19 @@ export function App() {
   });
 
   const updateTodo = (todo: Todo) => {
+    todos.map((t) => {
+      if (t.id === todo.id) {
+        return todo;
+      }
+      return t;
+    });
+    setTodos(todos);
     axios.put(API, todo).then(getTodos);
   };
 
   const deleteTodo = (id: number) => {
+    todos.filter((t) => t.id !== id);
+    setTodos(todos);
     axios.delete(API, { data: { id } }).then(getTodos);
   };
 
