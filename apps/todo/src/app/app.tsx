@@ -54,7 +54,7 @@ export function App() {
       </header>
       <main>
         <form className="flex" onSubmit={handleFormSubmit}>
-          <input onChange={handleSetForm} type="text" name="content" />
+          <input onChange={handleSetForm} type="text" name="content" required />
           <input type="submit" value="Add Todo" />
         </form>
         {todos.map((todo) => (

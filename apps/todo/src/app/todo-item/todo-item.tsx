@@ -48,6 +48,7 @@ export function TodoItem(props: TodoItemProps) {
             value={form.content}
             type="text"
             name="content"
+            required
           />
           <input type="submit" value="Save" />
         </form>
