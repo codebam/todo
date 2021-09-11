@@ -3,6 +3,7 @@ import styles from './app.module.scss';
 import axios from 'axios';
 import { TodoItem } from './todo-item/todo-item';
 import { useFormik } from 'formik';
+import { Record, Number, String, Boolean, Array as ArrayOf } from 'runtypes';
 
 const API_URL = process.env.API_URL || 'http://127.0.0.1';
 const API_PORT = process.env.API_PORT || 3333;
@@ -14,6 +15,14 @@ export interface Todo {
   content: string;
   completed: boolean;
 }
+
+const Todo = Record({
+  id: Number,
+  content: String,
+  completed: Boolean,
+});
+
+const TodoList = ArrayOf(Todo);
 
 export function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -40,7 +49,7 @@ export function App() {
   };
 
   const getTodos = () => {
-    axios.get(API).then((res) => setTodos(res.data));
+    axios.get(API).then((res) => setTodos(TodoList.check(res.data)));
   };
 
   return (
