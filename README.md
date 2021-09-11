@@ -1,6 +1,8 @@
 # Todo
 
-Start with
+First copy `env-sample` to `.env` and edit it to your liking
+
+Then build and start with
 
 ```
 docker run --rm -w="/home/node/app" -v ./:/home/node/app:z node:current-alpine npm i && npm run build
