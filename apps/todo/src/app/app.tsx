@@ -31,29 +31,32 @@ export function App() {
       content: '',
     },
     onSubmit: (values) => {
-      axios.post(API, values);
-      getTodos();
+      setTodos((todos) => [
+        ...todos,
+        { id: 0, content: values.content, completed: false },
+      ]);
+      axios.post(API, values).then(getTodos);
     },
   });
 
   useEffect(() => {
     getTodos();
-  });
+  }, []);
 
   const updateTodo = (todo: Todo) => {
-    todos.map((t) => {
-      if (t.id === todo.id) {
-        return todo;
-      }
-      return t;
-    });
-    setTodos(todos);
+    setTodos(
+      todos.map((t) => {
+        if (t.id === todo.id) {
+          return todo;
+        }
+        return t;
+      })
+    );
     axios.put(API, todo).then(getTodos);
   };
 
   const deleteTodo = (id: number) => {
-    todos.filter((t) => t.id !== id);
-    setTodos(todos);
+    setTodos(todos.filter((t) => t.id !== id));
     axios.delete(API, { data: { id } }).then(getTodos);
   };
 
