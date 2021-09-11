@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Knex, knex } from 'knex';
+import { Number, String, Boolean, Record } from 'runtypes';
 
-interface Todo {
-  id?: number;
-  content?: string;
-  completed?: boolean;
-}
+const Todo = Record({
+  id: Number,
+  content: String,
+  completed: Boolean,
+});
+
+const TodoCreate = Record({
+  content: String,
+});
+
+const TodoDelete = Record({
+  id: Number,
+});
 
 const config: Knex.Config = {
   client: 'pg',
@@ -26,16 +35,16 @@ export class AppService {
     return await db.select('id', 'content', 'completed').from('todos');
   }
   async createTodo(request: Request) {
-    await db('todos').insert({ ...request.body });
+    await db('todos').insert({ ...TodoCreate.check(request.body) });
     return 'success';
   }
   async updateTodo(request: Request) {
-    const todo = request.body as Todo;
+    const todo = Todo.check(request.body);
     await db('todos').where('id', todo.id).update(todo);
     return 'success';
   }
   async deleteTodo(request: Request) {
-    const todo = request.body as Todo;
+    const todo = TodoDelete.check(request.body);
     await db('todos').where('id', todo.id).del();
     return 'success';
   }
